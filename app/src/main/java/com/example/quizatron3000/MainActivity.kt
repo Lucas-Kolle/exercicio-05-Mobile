@@ -4,6 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -11,8 +14,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.quizatron3000.screens.FisrtQuestionScreen
-import com.example.quizatron3000.screens.LoginScreen
+import com.example.quizatron3000.screens.ResultScreen
+import com.example.quizatron3000.screens.StartScreen
 import com.example.quizatron3000.ui.theme.QuizAtron3000Theme
 
 class MainActivity : ComponentActivity() {
@@ -22,7 +32,77 @@ class MainActivity : ComponentActivity() {
         setContent {
             QuizAtron3000Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    FisrtQuestionScreen( modifier = Modifier.padding(innerPadding))
+
+                    val navController = rememberNavController()
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = "StartScreen",
+                        exitTransition = {
+                            slideOutOfContainer(
+                                towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                                animationSpec = tween(1000)
+                            )
+                        },
+                        enterTransition = {
+                            slideIntoContainer(
+                                towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                                animationSpec = tween(1000)
+                            )
+                        }
+                    ){
+                        composable (
+                            route = "StartScreen",
+                            exitTransition = {
+                                slideOutOfContainer(
+                                    towards = AnimatedContentTransitionScope.SlideDirection.Up,
+                                    animationSpec = tween(1000)
+                                ) + fadeOut(
+                                    animationSpec = tween(1000)
+                                )
+                            }
+                        ){
+                            StartScreen(
+                                modifier = Modifier.padding(innerPadding),
+                                navController = navController
+                            )
+                        }
+
+                        composable (
+                            route = "FirstQuestionScreen",
+                            exitTransition = {
+                                slideOutOfContainer(
+                                    towards = AnimatedContentTransitionScope.SlideDirection.Up,
+                                    animationSpec = tween(1000)
+                                ) + fadeOut(
+                                    animationSpec = tween(1000)
+                                )
+                            }
+                        ){
+
+                            FisrtQuestionScreen(
+                                modifier = Modifier.padding(innerPadding),
+                                navController = navController,
+                            )
+                        }
+
+                        composable (
+                            route = "ResultScreen",
+                            exitTransition = {
+                                slideOutOfContainer(
+                                    towards = AnimatedContentTransitionScope.SlideDirection.Up,
+                                    animationSpec = tween(1000)
+                                ) + fadeOut(
+                                    animationSpec = tween(1000)
+                                )
+                            }
+                        ){
+                            ResultScreen(
+                                modifier = Modifier.padding(innerPadding),
+                                navController = navController
+                            )
+                        }
+                    }
                 }
             }
         }

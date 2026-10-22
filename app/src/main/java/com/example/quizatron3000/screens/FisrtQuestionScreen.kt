@@ -28,13 +28,17 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.quizatron3000.R
 import com.example.quizatron3000.components.NumeroPergunta
 import com.example.quizatron3000.components.QuizImage
 import org.w3c.dom.Text
 
 @Composable
-fun FisrtQuestionScreen(modifier: Modifier = Modifier) {
+fun FisrtQuestionScreen(
+    modifier: Modifier = Modifier,
+    navController: NavController
+) {
 
     var statusResposta = 1000
 
