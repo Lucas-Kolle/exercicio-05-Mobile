@@ -29,12 +29,11 @@ import com.example.quizatron3000.components.QuizImage
 @Composable
 fun StartScreen(
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
+    sessionViewModel: SessionViewModel
 ) {
 
-    var nomeUsuario by remember {
-        mutableStateOf("")
-    }
+    val userName by sessionViewModel.userName.observeAsState("")
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -67,7 +66,7 @@ fun StartScreen(
             modifier = Modifier.width(200.dp),
             textoBotao = "COMEÇAR!",
             onClick = {
-                navController.navigate("FisrtQuestionScreen")
+                navController.navigate("FirstQuestionScreen")
             }
         )
 

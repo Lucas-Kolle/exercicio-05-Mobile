@@ -7,7 +7,8 @@ import androidx.navigation.NavController
 @Composable
 fun ResultScreen(
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
+    sessionViewModel: SessionViewModel
 ) {
 
 }

@@ -22,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.quizatron3000.screens.FisrtQuestionScreen
 import com.example.quizatron3000.screens.ResultScreen
+import com.example.quizatron3000.screens.SessionViewModel
 import com.example.quizatron3000.screens.StartScreen
 import com.example.quizatron3000.ui.theme.QuizAtron3000Theme
 
@@ -34,6 +35,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 
                     val navController = rememberNavController()
+                    val sessionViewModel = SessionViewModel()
 
                     NavHost(
                         navController = navController,
@@ -64,21 +66,20 @@ class MainActivity : ComponentActivity() {
                         ){
                             StartScreen(
                                 modifier = Modifier.padding(innerPadding),
-                                navController = navController
+                                navController = navController,
+                                sessionViewModel = sessionViewModel
                             )
                         }
 
                         composable (
-                            route = "FirstQuestionScreen",
-                            exitTransition = {
-                                slideOutOfContainer(
-                                    towards = AnimatedContentTransitionScope.SlideDirection.Up,
-                                    animationSpec = tween(1000)
-                                ) + fadeOut(
-                                    animationSpec = tween(1000)
-                                )
-                            }
+                            route = "FirstQuestionScreen/{nomeUsuario}",
+                            arguments = listOf(
+                                navArgument(name = "nomeUsuario"){
+                                    type = NavType.StringType
+                                }
+                            )
                         ){
+                            val nomeUsuario = it.arguments?.getString("nome") // Acessa os argumentos recebidos e pega o que possui a chave "nome"
 
                             FisrtQuestionScreen(
                                 modifier = Modifier.padding(innerPadding),
@@ -87,19 +88,11 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable (
-                            route = "ResultScreen",
-                            exitTransition = {
-                                slideOutOfContainer(
-                                    towards = AnimatedContentTransitionScope.SlideDirection.Up,
-                                    animationSpec = tween(1000)
-                                ) + fadeOut(
-                                    animationSpec = tween(1000)
-                                )
-                            }
+                            route = "ResultScreen"
                         ){
                             ResultScreen(
                                 modifier = Modifier.padding(innerPadding),
-                                navController = navController
+                                navController = navController,
                             )
                         }
                     }
